@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <record id="dorinter_ro_view_hr_expense_sheet_form" model="ir.ui.view">
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='payment_mode']" position="before">
+                    <field name="dif_total_disbursement"/>
+                </xpath>
+
+                <xpath expr="//button[@name='approve_expense_sheets']" position="after">
+                    <button name="desembolsar_expense_sheets" states="approve" string="Desembolsar" type="object"
+                            groups="hr_expense.group_hr_expense_user" class="oe_highlight o_expense_sheet_post"/>
+                </xpath>
+
+                <xpath expr="//button[@name='action_sheet_move_create']" position="replace">
+                    <button name="action_sheet_move_create" states="desembolsado" string="Post Journal Entries"
+                            type="object" groups="account.group_account_user" class="oe_highlight o_expense_sheet_post"/>
+                </xpath>
+
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve,desembolsado,post,done"/>
+                </xpath>
+
+                <xpath expr="//field[@name='expense_line_ids']" position="after">
+                    <group>
+                        <field name="disbursement_ids" widget="one2many" options="{'no_delete': True}">
+                        <tree>
+                            <field name="date_disbursement"/>
+                            <field name="type"/>
+                            <field name="amount" widget="monetary"/>
+                        </tree>
+                    </field>
+                    </group>
+                    <group>
+                        <field name="total_disbursement"/>
+                    </group>
+
+
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>
